@@ -30,7 +30,7 @@ BATTERY_DESCRIPTIONS: list[SensorEntityDescription] = [
 # Dynamically add cell voltages
 BATTERY_DESCRIPTIONS.extend([
     SensorEntityDescription(key=f"cell_{i}_voltage_v", name=f"Cell {i} Voltage",
-                            native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE)
+                            native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE, suggested_display_precision=2)
     for i in range(1, 17)
 ])
 
