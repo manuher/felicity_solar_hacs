@@ -7,11 +7,12 @@ from homeassistant.const import (
     UnitOfElectricPotential,
     UnitOfElectricCurrent,
     PERCENTAGE,
+    UnitOfTemperature,
 )
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-# Define all the data points from your BatteryData type
-BATTERY_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
+# Base descriptions
+BATTERY_DESCRIPTIONS: list[SensorEntityDescription] = [
     SensorEntityDescription(key="voltage", name="Voltage",
                             native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE),
     SensorEntityDescription(key="current", name="Current",
@@ -20,7 +21,25 @@ BATTERY_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
                             native_unit_of_measurement=PERCENTAGE, device_class=SensorDeviceClass.BATTERY),
     SensorEntityDescription(key="soh", name="State of Health",
                             native_unit_of_measurement=PERCENTAGE),
-)
+    SensorEntityDescription(key="temp_max", name="Max Temperature",
+                            native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE),
+    SensorEntityDescription(key="temp_min", name="Min Temperature",
+                            native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE),
+]
+
+# Dynamically add cell voltages
+BATTERY_DESCRIPTIONS.extend([
+    SensorEntityDescription(key=f"cell_{i}_voltage_v", name=f"Cell {i} Voltage",
+                            native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE)
+    for i in range(1, 17)
+])
+
+# Dynamically add cell temperatures
+BATTERY_DESCRIPTIONS.extend([
+    SensorEntityDescription(key=f"cell_{i}_temp_c", name=f"Cell {i} Temperature",
+                            native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE)
+    for i in range(1, 5)
+])
 
 
 def create_battery_sensors(coordinator, device_sn):

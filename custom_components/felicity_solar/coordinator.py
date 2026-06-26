@@ -95,18 +95,30 @@ class FelicitySolarCoordinator(DataUpdateCoordinator):
                             }
                         }
                     elif device_type == DeviceTypeEnum.LITHIUM_BATTERY_PACK:
+                        data = {
+                            "voltage": _safe_float(snapshot.get("battVolt")),
+                            "current": _safe_float(snapshot.get("battCurr")),
+                            "soc": _safe_int(snapshot.get("battSoc")),
+                            "soh": _safe_int(snapshot.get("battSoh")),
+                            "ratedEnergy": _safe_float(snapshot.get("ratedEnergy")),
+                            "energyUnit": str(snapshot.get("energyUnit", "")),
+                            "nameplateRatedPower": str(snapshot.get("nameplateRatedPower", "")),
+                            "tempMax": _safe_float(snapshot.get("tempMax")),
+                            "tempMin": _safe_float(snapshot.get("tempMin")),
+                            "chargeVoltageLimit": _safe_float(snapshot.get("BMSLCVolt")),
+                            "dischargeVoltageLimit": _safe_float(snapshot.get("BMSLDVolt")),
+                            "maxDischargeCurrent": _safe_float(snapshot.get("BMSLDCurr")),
+                        }
+                        # Flattened cell voltages and temperatures
+                        for i in range(1, 17):
+                            data[f"cell_{i}_voltage_mv"] = _safe_float(snapshot.get(f"cellVolt{i}"))
+                        for i in range(1, 5):
+                            data[f"cell_{i}_temp_c"] = _safe_float(snapshot.get(f"cellTemp{i}"))
+
                         devices_data[device_sn] = {
                             "type": device_type,
                             "serialNumber": device_sn,
-                            "data": {
-                                "voltage": _safe_float(snapshot.get("battVolt")),
-                                "current": _safe_float(snapshot.get("battCurr")),
-                                "soc": _safe_int(snapshot.get("battSoc")),
-                                "soh": _safe_int(snapshot.get("battSoh")),
-                                "ratedEnergy": _safe_float(snapshot.get("ratedEnergy")),
-                                "energyUnit": str(snapshot.get("energyUnit", "")),
-                                "nameplateRatedPower": str(snapshot.get("nameplateRatedPower", "")),
-                            }
+                            "data": data
                         }
                     else:
                         _LOGGER.warning(
