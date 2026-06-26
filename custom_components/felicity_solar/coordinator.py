@@ -111,7 +111,7 @@ class FelicitySolarCoordinator(DataUpdateCoordinator):
                         }
                         # Flattened cell voltages and temperatures
                         for i in range(1, 17):
-                            data[f"cell_{i}_voltage_mv"] = _safe_float(snapshot.get(f"cellVolt{i}"))
+                            data[f"cell_{i}_voltage_v"] = _safe_float(snapshot.get(f"cellVolt{i}"))/1000
                         for i in range(1, 5):
                             data[f"cell_{i}_temp_c"] = _safe_float(snapshot.get(f"cellTemp{i}"))
 

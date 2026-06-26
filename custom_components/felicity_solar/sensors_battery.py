@@ -21,9 +21,9 @@ BATTERY_DESCRIPTIONS: list[SensorEntityDescription] = [
                             native_unit_of_measurement=PERCENTAGE, device_class=SensorDeviceClass.BATTERY),
     SensorEntityDescription(key="soh", name="State of Health",
                             native_unit_of_measurement=PERCENTAGE),
-    SensorEntityDescription(key="temp_max", name="Max Temperature",
+    SensorEntityDescription(key="tempMax", name="Max Temperature",
                             native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE),
-    SensorEntityDescription(key="temp_min", name="Min Temperature",
+    SensorEntityDescription(key="tempMin", name="Min Temperature",
                             native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE),
 ]
 
