@@ -25,6 +25,15 @@ BATTERY_DESCRIPTIONS: list[SensorEntityDescription] = [
                             native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE),
     SensorEntityDescription(key="tempMin", name="Min Temperature",
                             native_unit_of_measurement=UnitOfTemperature.CELSIUS, device_class=SensorDeviceClass.TEMPERATURE),
+    SensorEntityDescription(key="voltage_max", name="Max Cell Voltage",
+                            native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE,
+                            suggested_display_precision=3),
+    SensorEntityDescription(key="voltage_min", name="Min Cell Voltage",
+                            native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE,
+                            suggested_display_precision=3),
+    SensorEntityDescription(key="voltage_delta", name="Battery Cell Voltage Delta",
+                            native_unit_of_measurement=UnitOfElectricPotential.VOLT, device_class=SensorDeviceClass.VOLTAGE,
+                            suggested_display_precision=3),
 ]
 
 # Dynamically add cell voltages

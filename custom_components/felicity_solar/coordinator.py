@@ -115,6 +115,17 @@ class FelicitySolarCoordinator(DataUpdateCoordinator):
                         for i in range(1, 5):
                             data[f"cell_{i}_temp_c"] = _safe_float(snapshot.get(f"cellTemp{i}"))
 
+                        voltages = [data[f"cell_{i}_voltage_v"] for i in range(1, 17) if data.get(f"cell_{i}_voltage_v", 0) > 0]
+                        
+                        if voltages:
+                            data["voltage_max"] = max(voltages)
+                            data["voltage_min"] = min(voltages)
+                            data["voltage_delta"] = round(max(voltages) - min(voltages), 3)
+                        else:
+                            data["voltage_max"] = 0.0
+                            data["voltage_min"] = 0.0
+                            data["voltage_delta"] = 0.0
+
                         devices_data[device_sn] = {
                             "type": device_type,
                             "serialNumber": device_sn,
